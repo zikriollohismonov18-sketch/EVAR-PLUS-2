@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#075a43">
+<title>EVAR PLUS 2.0 — Demo</title>
+<style>
+:root{
+  --green:#075a43;--green2:#0d8060;--gold:#e9b94c;
+  --bg:#f3f6f4;--white:#fff;--text:#172c25;
+  --muted:#728078;--border:#e2e9e4;--red:#d84444;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{background:var(--green);color:white;padding:16px 18px;position:sticky;top:0;z-index:20}
+.top{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-size:22px;font-weight:900;letter-spacing:.4px}
+.logo span{color:var(--gold)}
+.small{font-size:12px;opacity:.8}
+main{max-width:1100px;margin:auto;padding:20px 16px 95px}
+.hero{background:linear-gradient(125deg,#075a43,#15916c);color:white;border-radius:22px;padding:25px;display:flex;justify-content:space-between;gap:20px}
+.hero h1{margin:8px 0;font-size:29px}
+.hero p{opacity:.9;line-height:1.6}
+.hero .symbol{font-size:75px;align-self:center}
+.card{background:white;border:1px solid var(--border);border-radius:18px;padding:18px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.stat strong{display:block;font-size:23px;color:var(--green)}
+.stat span{color:var(--muted);font-size:13px}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:26px 0 14px}
+.section-title h2{margin:0;font-size:21px}
+.muted{color:var(--muted)}
+.product{overflow:hidden;padding:0}
+.product .photo{height:150px;background:#edf5ef;display:flex;align-items:center;justify-content:center;font-size:68px}
+.product .info{padding:14px}
+.product h3{font-size:15px;min-height:36px;margin:0 0 8px}
+.price{font-size:20px;font-weight:bold;color:var(--green)}
+.tag{display:inline-block;background:#e5f5ed;color:#087a54;padding:5px 9px;border-radius:99px;font-size:11px;font-weight:bold}
+.btn{border:0;background:var(--green);color:white;padding:12px 16px;border-radius:11px;font-weight:bold}
+.btn:hover{background:var(--green2)}
+.btn.secondary{background:#e7f2ed;color:var(--green)}
+.btn.gold{background:var(--gold);color:#302500}
+.btn.danger{background:#fff0f0;color:var(--red)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.full{width:100%}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.gap{display:flex;gap:8px;flex-wrap:wrap}
+input,select{border:1px solid var(--border);background:white;padding:12px;border-radius:11px;width:100%;outline:none}
+input:focus{border-color:var(--green2)}
+.search{margin-top:16px}
+.coupon{border:1px dashed #b6cbbd;background:#f8fcf9;border-radius:14px;padding:15px}
+.coupon strong{font-size:20px;color:var(--green)}
+.coupon p{font-size:13px;color:var(--muted)}
+.nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);display:flex;justify-content:center;z-index:30}
+.nav button{flex:1;max-width:160px;border:0;background:none;padding:12px 4px;color:#697a70;font-size:12px}
+.nav button.active{color:var(--green);font-weight:bold}
+.nav button .ico{display:block;font-size:23px;margin-bottom:3px}
+.page{display:none}
+.page.active{display:block}
+.cart-line{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--border)}
+.qty{display:flex;align-items:center;gap:10px}
+.qty button{width:30px;height:30px;border:0;border-radius:8px;background:#e8f1eb}
+.loyalty{background:linear-gradient(130deg,#063e30,#0b8060);color:white;padding:24px;border-radius:20px}
+.loyalty .number{font-size:25px;font-weight:bold;letter-spacing:3px;margin:18px 0}
+.qr{background:white;color:#111;width:120px;height:120px;margin:auto;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:12px;text-align:center}
+.receipt{padding:15px;border-bottom:1px solid var(--border)}
+.notice{background:#fff8e7;border:1px solid #f1dfa5;border-radius:12px;padding:12px;font-size:13px;margin:14px 0}
+.barcode{font-family:monospace;font-size:13px;letter-spacing:2px}
+.hidden{display:none!important}
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#1c3429;color:white;padding:12px 18px;border-radius:12px;z-index:100;display:none;max-width:90%;text-align:center}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.hero .symbol{font-size:50px}.hero h1{font-size:24px}}
+@media(max-width:420px){.grid{gap:9px}.product .photo{height:115px;font-size:49px}.product .info{padding:10px}.stats{gap:7px}.stat strong{font-size:18px}.card{padding:13px}}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="top">
+  <div>
+   <div class="logo">EVAR <span>PLUS 2.0</span></div>
+   <div class="small">Намунаи ғайрирасмӣ • Demo</div>
+  </div>
+  <button class="btn gold" onclick="showPage('cart')">
+   🛒 <span id="headerCount">0</span>
+  </button>
+ </div>
+</header>
+
+<main>
+<section id="home" class="page active">
+ <div class="hero">
+  <div>
+   <span class="tag">Супермаркети рақамӣ</span>
+   <h1>Хариди осонтар.<br>Бонуси бештар.</h1>
+   <p>Маҳсулотро интихоб кунед, купон истифода баред ва хол ҷамъ намоед.</p>
+   <button class="btn gold" onclick="showPage('catalog')">Дидани маҳсулот →</button>
+  </div>
+  <div class="symbol">🛍️</div>
+ </div>
+
+ <div class="stats">
+  <div class="card stat"><strong id="homePoints">0</strong><span>Холҳои шумо</span></div>
+  <div class="card stat"><strong id="homeCoupons">0</strong><span>Купонҳои фаъол</span></div>
+  <div class="card stat"><strong id="homeReceipts">0</strong><span>Харидҳо</span></div>
+ </div>
+
+ <div class="section-title"><h2>Имкониятҳои нав</h2></div>
+ <div class="grid">
+  <div class="card" onclick="showPage('scan')" style="cursor:pointer">📷<h3>Scan & Go</h3><p class="muted">Скан кардани маҳсулот</p></div>
+  <div class="card" onclick="showPage('coupons')" style="cursor:pointer">🎟️<h3>Купонҳо</h3><p class="muted">Тахфифҳои махсус</p></div>
+  <div class="card" onclick="showPage('loyalty')" style="cursor:pointer">💳<h3>Бонусҳо</h3><p class="muted">Хол ва мукофотҳо</p></div>
+  <div class="card" onclick="showPage('receipts')" style="cursor:pointer">🧾<h3>Чекҳо</h3><p class="muted">Таърихи харид</p></div>
+ </div>
+
+ <div class="section-title"><h2>Маҳсулоти машҳур</h2></div>
+ <div class="grid" id="featured"></div>
+</section>
+
+<section id="catalog" class="page">
+ <div class="section-title"><h2>Каталоги маҳсулот</h2></div>
+ <input id="search" class="search" placeholder="🔎 Ҷустуҷӯи маҳсулот..." oninput="renderCatalog()">
+ <div style="height:10px"></div>
+ <select id="category" onchange="renderCatalog()">
+  <option value="">Ҳамаи категорияҳо</option>
+  <option value="Ширӣ">Маҳсулоти ширӣ</option>
+  <option value="Нон">Нон</option>
+  <option value="Нӯшокӣ">Нӯшокиҳо</option>
+  <option value="Мева">Меваҳо</option>
+  <option value="Дигар">Дигар</option>
+ </select>
+ <div style="height:15px"></div>
+ <div class="grid" id="catalogGrid"></div>
+</section>
+
+<section id="scan" class="page">
+ <div class="section-title"><h2>📷 Scan & Go</h2></div>
+ <div class="card">
+  <p>Штрихкоди маҳсулотро бо камера скан кунед ё рақамашро дастӣ ворид намоед.</p>
+  <div class="notice">Ин намуна танҳо штрихкодҳои маҳсулоти намунавиро мешиносад. Барои истифода дар мағозаи воқеӣ базаи маҳсулоти Ёвар лозим аст.</div>
+  <video id="video" autoplay playsinline style="width:100%;max-height:260px;background:#14241d;border-radius:14px;display:none"></video>
+  <div class="gap" style="margin:12px 0">
+   <button class="btn" onclick="startScanner()">📷 Кушодани камера</button>
+   <button class="btn secondary" onclick="stopScanner()">Қатъ кардан</button>
+  </div>
+  <input id="barcodeInput" placeholder="Штрихкод, мисол: 100001" inputmode="numeric">
+  <div style="height:10px"></div>
+  <button class="btn full" onclick="scanManual()">Ҷустуҷӯ ва илова ба сабад</button>
+  <p class="muted">Штрихкодҳои намунавӣ: 100001 то 100008</p>
+ </div>
+ <div class="section-title"><h2>Сабади сканшуда</h2></div>
+ <div class="card" id="scanCart"></div>
+</section>
+
+<section id="coupons" class="page">
+ <div class="section-title"><h2>🎟️ Купонҳо</h2></div>
+ <div class="grid" id="couponGrid"></div>
+ <div class="notice">Купонҳо намунавӣ ҳастанд ва танҳо дар ин барнома истифода мешаванд.</div>
+</section>
+
+<section id="cart" class="page">
+ <div class="section-title"><h2>🛒 Сабади харид</h2></div>
+ <div class="card" id="cartLines"></div>
+ <div style="height:15px"></div>
+ <div class="card">
+  <h3>Ҳисоб</h3>
+  <div class="row"><span>Маблағи маҳсулот</span><strong id="subtotal">0</strong></div>
+  <div style="height:10px"></div>
+  <div class="row"><span>Тахфифи купон</span><strong id="discount">0</strong></div>
+  <hr style="border:0;border-top:1px solid #e2e9e4;margin:16px 0">
+  <div class="row"><strong>Ҳамагӣ</strong><strong class="price" id="total">0</strong></div>
+  <p id="selectedCoupon" class="muted"></p>
+  <button class="btn full" onclick="checkout()">Тасдиқи хариди намунавӣ</button>
+ </div>
+</section>
+
+<section id="loyalty" class="page">
+ <div class="section-title"><h2>💳 Корти бонусӣ</h2></div>
+ <div class="loyalty">
+  <div class="row"><strong>EVAR PLUS</strong><span>DEMO CARD</span></div>
+  <div class="number">0000 2026 0001</div>
+  <div class="qr">QR DEMO<br>000020260001</div>
+  <p style="text-align:center">Ин QR танҳо намуна аст</p>
+ </div>
+ <div class="stats">
+  <div class="card stat"><strong id="pointsValue">0</strong><span>Хол</span></div>
+  <div class="card stat"><strong>1%</strong><span>Холи намунавӣ</span></div>
+  <div class="card stat"><strong>100</strong><span>Хол = купон</span></div>
+ </div>
+ <div class="card">
+  <h3>🎁 Мукофот</h3>
+  <p>100 холро ба купони 10 сомонӣ иваз кунед.</p>
+  <button class="btn" onclick="redeemPoints()">Иваз кардани 100 хол</button>
+ </div>
+</section>
+
+<section id="receipts" class="page">
+ <div class="section-title"><h2>🧾 Чекҳои рақамӣ</h2></div>
+ <div id="receiptList"></div>
+</section>
+
+<section id="admin" class="page">
+ <div class="section-title"><h2>⚙️ Панели намунавӣ</h2></div>
+ <div class="notice">Ин панел муҳофизати воридшавӣ надорад. Он танҳо барои намоиши маълумоти маҳаллӣ аст, на идоракунии воқеии Ёвар.</div>
+ <div class="stats">
+  <div class="card stat"><strong id="adminSales">0</strong><span>Фурӯш, сомонӣ</span></div>
+  <div class="card stat"><strong id="adminOrders">0</strong><span>Харидҳо</span></div>
+  <div class="card stat"><strong id="adminItems">0</strong><span>Маҳсулот</span></div>
+ </div>
+ <div class="card">
+  <h3>Маълумоти намунавӣ</h3>
+  <p class="muted">Барқарор кардани маълумоти аввалия тамоми сабад, холҳо ва чекҳои ҳамин браузерро пок мекунад.</p>
+  <button class="btn danger" onclick="resetDemo()">Аз нав оғоз кардан</button>
+ </div>
+</section>
+</main>
+
+<nav class="nav" id="nav">
+ <button data-page="home" class="active" onclick="showPage('home')"><span class="ico">🏠</span>Асосӣ</button>
+ <button data-page="catalog" onclick="showPage('catalog')"><span class="ico">🛍️</span>Каталог</button>
+ <button data-page="scan" onclick="showPage('scan')"><span class="ico">📷</span>Scan</button>
+ <button data-page="coupons" onclick="showPage('coupons')"><span class="ico">🎟️</span>Купон</button>
+ <button data-page="loyalty" onclick="showPage('loyalty')"><span class="ico">💳</span>Бонус</button>
+ <button data-page="cart" onclick="showPage('cart')"><span class="ico">🛒</span>Сабад</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const PRODUCTS=[
+ {id:1,name:"Шир 1 литр",price:12.5,category:"Ширӣ",emoji:"🥛",barcode:"100001"},
+ {id:2,name:"Нони тару тоза",price:5,category:"Нон",emoji:"🍞",barcode:"100002"},
+ {id:3,name:"Тухм 10 дона",price:19,category:"Дигар",emoji:"🥚",barcode:"100003"},
+ {id:4,name:"Себ 1 кг",price:14,category:"Мева",emoji:"🍎",barcode:"100004"},
+ {id:5,name:"Банан 1 кг",price:18,category:"Мева",emoji:"🍌",barcode:"100005"},
+ {id:6,name:"Об 1.5 литр",price:4.5,category:"Нӯшокӣ",emoji:"💧",barcode:"100006"},
+ {id:7,name:"Панир 200 г",price:22,category:"Ширӣ",emoji:"🧀",barcode:"100007"},
+ {id:8,name:"Шарбати мева 1 л",price:16,category:"Нӯшокӣ",emoji:"🧃",barcode:"100008"}
+];
+
+const INITIAL_COUPONS=[
+ {id:"WELCOME5",title:"5 сомонӣ тахфиф",amount:5,min:40,used:false},
+ {id:"SAVE10",title:"10 сомонӣ тахфиф",amount:10,min:100,used:false}
+];
+
+const KEY="evar_plus_demo_v2";
+
+function defaultState(){
+ return {
+  cart:{},
+  points:0,
+  coupons:JSON.parse(JSON.stringify(INITIAL_COUPONS)),
+  activeCoupon:null,
+  receipts:[]
+ };
+}
+
+function loadState(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(KEY));
+  if(saved&&typeof saved==="object"){
+   const base=defaultState();
+   return {...base,...saved};
+  }
+ }catch(e){}
+ return defaultState();
+}
+
+let state=loadState();
+let stream=null;
+let scanTimer=null;
+let scanning=false;
+let lastBarcode="";
+let lastScanTime=0;
+
+function save(){
+ localStorage.setItem(KEY,JSON.stringify(state));
+ renderAll();
+}
+
+function money(n){
+ return Number(n||0).toFixed(2)+" сомонӣ";
+}
+
+function product(id){
+ return PRODUCTS.find(p=>p.id===Number(id));
+}
+
+function escapeHtml(value){
+ return String(value).replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function toast(message){
+ const el=document.getElementById("toast");
+ el.textContent=message;
+ el.style.display="block";
+ clearTimeout(window.toastTimeout);
+ window.toastTimeout=setTimeout(()=>el.style.display="none",2600);
+}
+
+function showPage(page){
+ if(!document.getElementById(page))return;
+ document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
+ document.getElementById(page).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>{
+  b.classList.toggle("active",b.dataset.page===page);
+ });
+ if(page!=="scan")stopScanner();
+ window.scrollTo({top:0,behavior:"smooth"});
+ renderAll();
+}
+
+function productCard(p){
+ return `
+ <div class="card product">
+  <div class="photo">${p.emoji}</div>
+  <div class="info">
+   <span class="tag">${escapeHtml(p.category)}</span>
+   <h3>${escapeHtml(p.name)}</h3>
+   <div class="price">${money(p.price)}</div>
+   <p class="muted barcode">${escapeHtml(p.barcode)}</p>
+   <button class="btn full" onclick="addCart(${p.id})">+ Ба сабад</button>
+  </div>
+ </div>`;
+}
+
+function renderCatalog(){
+ const search=document.getElementById("search").value.toLowerCase().trim();
+ const category=document.getElementById("category").value;
+ const items=PRODUCTS.filter(p=>
+  (!category||p.category===category)&&
+  (p.name.toLowerCase().includes(search)||p.barcode.includes(search))
+ );
+ document.getElementById("catalogGrid").innerHTML=
+  items.length?items.map(productCard).join(""):"<p>Маҳсулот ёфт нашуд.</p>";
+}
+
+function addCart(id){
+ const p=product(id);
+ if(!p)return;
+ state.cart[id]=(Number(state.cart[id])||0)+1;
+ save();
+ toast(p.name+" ба сабад илова шуд");
+}
+
+function changeQty(id,delta){
+ const next=(Number(state.cart[id])||0)+delta;
+ if(next<=0)delete state.cart[id];
+ else state.cart[id]=next;
+ save();
+}
+
+function cartItems(){
+ return Object.entries(state.cart)
+  .map(([id,qty])=>({p:product(id),qty:Number(qty)}))
+  .filter(x=>x.p&&x.qty>0);
+}
+
+function subtotal(){
+ return cartItems().reduce((sum,x)=>sum+x.p.price*x.qty,0);
+}
+
+function activeCoupon(){
+ const c=state.coupons.find(x=>x.id===state.activeCoupon&&!x.used);
+ if(!c||subtotal()<c.min)return null;
+ return c;
+}
+
+function discount(){
+ const c=activeCoupon();
+ return c?Math.min(c.amount,subtotal()):0;
+}
+
+function total(){
+ return Math.max(0,subtotal()-discount());
+}
+
+function renderCart(){
+ const items=cartItems();
+ const html=items.map(({p,qty})=>`
+  <div class="cart-line">
+   <div><strong>${p.emoji} ${escapeHtml(p.name)}</strong>
+    <div class="muted">${money(p.price)} × ${qty}</div>
+   </div>
+   <div class="qty">
+    <button onclick="changeQty(${p.id},-1)">−</button>
+    <strong>${qty}</strong>
+    <button onclick="changeQty(${p.id},1)">+</button>
+   </div>
+  </div>`).join("");
+ document.getElementById("cartLines").innerHTML=
+  html||"<p class='muted'>Сабад холӣ аст.</p>";
+ document.getElementById("scanCart").innerHTML=
+  html||"<p class='muted'>Ҳоло маҳсулот нест.</p>";
+ document.getElementById("subtotal").textContent=money(subtotal());
+ document.getElementById("discount").textContent="− "+money(discount());
+ document.getElementById("total").textContent=money(total());
+ const c=state.coupons.find(x=>x.id===state.activeCoupon&&!x.used);
+ document.getElementById("selectedCoupon").textContent=
+  c?(activeCoupon()?"Купон: "+c.id:"Купон "+c.id+" аз "+money(c.min)+" фаъол мешавад"):"Купон интихоб нашудааст";
+ document.getElementById("headerCount").textContent=
+  items.reduce((sum,x)=>sum+x.qty,0);
+}
+
+function renderCoupons(){
+ document.getElementById("couponGrid").innerHTML=state.coupons.map(c=>`
+  <div class="coupon">
+   <span class="tag">${escapeHtml(c.id)}</span>
+   <h3>${escapeHtml(c.title)}</h3>
+   <strong>− ${money(c.amount)}</strong>
+   <p>Барои харид аз ${money(c.min)}</p>
+   <button class="btn full ${state.activeCoupon===c.id?"secondary":""}"
+    ${c.used?"disabled":""}
+    onclick="selectCoupon('${c.id}')">
+    ${c.used?"Истифода шудааст":state.activeCoupon===c.id?"Интихоб шудааст":"Интихоб кардан"}
+   </button>
+  </div>`).join("");
+}
+
+function selectCoupon(id){
+ const c=state.coupons.find(x=>x.id===id&&!x.used);
+ if(!c)return;
+ state.activeCoupon=state.activeCoupon===id?null:id;
+ save();
+ toast("Купон интихоб шуд");
+}
+
+function redeemPoints(){
+ if(state.points<100){
+  toast("Барои мукофот 100 хол лозим аст");
+  return;
+ }
+ state.points-=100;
+ const id="REWARD"+Date.now();
+ state.coupons.push({
+  id,title:"Мукофоти 10 сомонӣ",amount:10,min:10,used:false
+ });
+ save();
+ toast("Купони 10 сомонӣ гирифта шуд!");
+}
+
+function checkout(){
+ const items=cartItems();
+ if(!items.length){
+  toast("Сабад холӣ аст");
+  return;
+ }
+ const sum=subtotal();
+ const c=activeCoupon();
+ const off=discount();
+ const paid=total();
+ const earned=Math.floor(paid/10);
+ const receipt={
+  id:"EV-"+Date.now(),
+  date:new Date().toISOString(),
+  items:items.map(x=>({
+   name:x.p.name,price:x.p.price,qty:x.qty
+  })),
+  subtotal:sum,discount:off,total:paid,earned
+ };
+ if(c)c.used=true;
+ state.receipts.unshift(receipt);
+ state.points+=earned;
+ state.cart={};
+ state.activeCoupon=null;
+ save();
+ showPage("receipts");
+ toast("Хариди намунавӣ анҷом ёфт! +"+earned+" хол");
+}
+
+function renderReceipts(){
+ const list=document.getElementById("receiptList");
+ if(!state.receipts.length){
+  list.innerHTML="<div class='card muted'>Ҳоло чек нест.</div>";
+  return;
+ }
+ list.innerHTML=state.receipts.map(r=>`
+  <div class="card" style="margin-bottom:12px">
+   <div class="row">
+    <strong>${escapeHtml(r.id)}</strong>
+    <span class="muted">${new Date(r.date).toLocaleString("tg-TJ")}</span>
+   </div>
+   <hr style="border:0;border-top:1px solid #eee;margin:12px 0">
+   ${r.items.map(i=>`
+    <div class="row" style="margin:7px 0">
+     <span>${escapeHtml(i.name)} × ${i.qty}</span>
+     <span>${money(i.price*i.qty)}</span>
+    </div>`).join("")}
+   <hr style="border:0;border-top:1px solid #eee;margin:12px 0">
+   <div class="row"><span>Тахфиф</span><span>− ${money(r.discount)}</span></div>
+   <div class="row"><strong>Ҳамагӣ</strong><strong>${money(r.total)}</strong></div>
+   <p class="muted">Холҳои гирифташуда: +${r.earned}</p>
+  </div>`).join("");
+}
+
+function renderAdmin(){
+ const sum=state.receipts.reduce((s,r)=>s+r.total,0);
+ document.getElementById("adminSales").textContent=sum.toFixed(2);
+ document.getElementById("adminOrders").textContent=state.receipts.length;
+ document.getElementById("adminItems").textContent=PRODUCTS.length;
+}
+
+function renderAll(){
+ document.getElementById("featured").innerHTML=
+  PRODUCTS.slice(0,4).map(productCard).join("");
+ renderCatalog();
+ renderCart();
+ renderCoupons();
+ renderReceipts();
+ renderAdmin();
+ document.getElementById("homePoints").textContent=state.points;
+ document.getElementById("pointsValue").textContent=state.points;
+ document.getElementById("homeCoupons").textContent=
+  state.coupons.filter(c=>!c.used).length;
+ document.getElementById("homeReceipts").textContent=state.receipts.length;
+}
+
+function processBarcode(code){
+ const now=Date.now();
+ if(code===lastBarcode&&now-lastScanTime<2500)return;
+ lastBarcode=code;
+ lastScanTime=now;
+ const p=PRODUCTS.find(x=>x.barcode===code);
+ if(p)addCart(p.id);
+ else toast("Штрихкод дар каталоги намунавӣ нест: "+code);
+}
+
+function scanManual(){
+ const input=document.getElementById("barcodeInput");
+ const code=input.value.trim();
+ if(!code){toast("Штрихкодро ворид кунед");return;}
+ processBarcode(code);
+ input.value="";
+}
+
+async function startScanner(){
+ if(scanning)return;
+ if(!navigator.mediaDevices?.getUserMedia){
+  toast("Камера дар ин браузер дастрас нест");
+  return;
+ }
+ if(!("BarcodeDetector" in window)){
+  toast("Сканери автоматӣ дастгирӣ намешавад. Рақамро дастӣ ворид кунед.");
+  return;
+ }
+ try{
+  const detector=new BarcodeDetector({
+   formats:["ean_13","ean_8","code_128","upc_a","upc_e"]
+  });
+  stream=await navigator.mediaDevices.getUserMedia({
+   video:{facingMode:{ideal:"environment"}},audio:false
+  });
+  const video=document.getElementById("video");
+  video.srcObject=stream;
+  video.style.display="block";
+  await video.play();
+  scanning=true;
+  async function detect(){
+   if(!scanning)return;
+   try{
+    const codes=await detector.detect(video);
+    if(codes.length)processBarcode(codes[0].rawValue);
+   }catch(e){}
+   if(scanning)scanTimer=setTimeout(detect,350);
+  }
+  detect();
+ }catch(e){
+  stopScanner();
+  toast("Камера кушода нашуд. Иҷозат ва HTTPS-ро санҷед.");
+ }
+}
+
+function stopScanner(){
+ scanning=false;
+ if(scanTimer)clearTimeout(scanTimer);
+ scanTimer=null;
+ if(stream){
+  stream.getTracks().forEach(track=>track.stop());
+  stream=null;
+ }
+ const video=document.getElementById("video");
+ video.pause();
+ video.srcObject=null;
+ video.style.display="none";
+}
+
+function resetDemo(){
+ if(!confirm("Ҳамаи маълумоти намунавӣ пок шавад?"))return;
+ stopScanner();
+ state=defaultState();
+ save();
+ showPage("home");
+ toast("Барнома аз нав оғоз шуд");
+}
+
+window.addEventListener("beforeunload",stopScanner);
+renderAll();
+</script>
+</body>
+</html>
+# EVAR-PLUS-2
